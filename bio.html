@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rupali's Arts | Instagram Bio Links</title>
+  <meta name="description" content="Quick links for Rupali's Arts (@rupalis_arts). Explore handcrafted woolen rangolis, sunflower Ganpati aasans, and order via Instagram DM." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --emerald-900: #062319;
+      --emerald-800: #0b3829;
+      --gold-400: #fbbf24;
+      --gold-500: #f59e0b;
+      --amber-600: #b45309;
+      --cream-50: #fdfcf9;
+      --grad-gold: linear-gradient(135deg, #fce080 0%, #f59e0b 50%, #b45309 100%);
+      --grad-emerald: linear-gradient(145deg, #093325 0%, #062319 100%);
+      --grad-instagram: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--grad-emerald);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1.25rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Festive Glow */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.2) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .bio-container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Profile Header */
+    .profile-avatar-wrapper {
+      position: relative;
+      margin-bottom: 1.25rem;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid var(--gold-400);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.45);
+      object-fit: cover;
+      background: #000;
+    }
+
+    .avatar-diya-badge {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grad-gold);
+      color: var(--emerald-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-title {
+      font-family: var(--font-serif);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+      text-align: center;
+    }
+
+    .profile-handle {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--gold-400);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .profile-bio {
+      font-size: 0.875rem;
+      color: #e5e7eb;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 2rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      padding: 0.75rem 1.25rem;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Links Stack */
+    .links-stack {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .bio-link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 1rem 1.35rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(251, 191, 36, 0.3);
+      border-radius: 16px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.975rem;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .bio-link-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--gold-400);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+    }
+
+    .bio-link-btn.featured {
+      background: var(--grad-instagram);
+      border-color: transparent;
+      box-shadow: 0 6px 20px rgba(220, 39, 67, 0.4);
+    }
+
+    .bio-link-btn.featured:hover {
+      box-shadow: 0 10px 30px rgba(220, 39, 67, 0.6);
+    }
+
+    .btn-inner-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .btn-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--gold-400);
+    }
+
+    .featured .btn-icon {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-chevron {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+    }
+
+    /* Social Icons Row */
+    .social-row {
+      display: flex;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .social-circ-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.2rem;
+      text-decoration: none;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .social-circ-btn:hover {
+      transform: translateY(-3px) scale(1.1);
+      background: var(--grad-gold);
+      color: var(--emerald-900);
+    }
+
+    .bio-footer {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bio-container">
+    <!-- Profile Avatar & Bio -->
+    <div class="profile-avatar-wrapper">
+      <img src="assets/images/sunflower-aasan-orange.jpg" alt="Rupali's Arts" class="profile-avatar" />
+      <div class="avatar-diya-badge">🪔</div>
+    </div>
+
+    <h1 class="profile-title">Rupali's Arts</h1>
+    <a href="https://www.instagram.com/rupalis_arts/" target="_blank" class="profile-handle">
+      <i class="fab fa-instagram"></i> @rupalis_arts
+    </a>
+
+    <p class="profile-bio">
+      ✨ <strong>Handcrafted Festive & Home Decor</strong><br />
+      🌸 Washable & Reusable Woolen Rangolis<br />
+      🌻 Sunflower Deity Aasans & Embellished Diya Holders<br />
+      🚚 Pan-India Delivery • Made with Love ❤️
+    </p>
+
+    <!-- Link Buttons -->
+    <div class="links-stack">
+      <!-- Direct Instagram DM Order -->
+      <a href="https://ig.me/m/rupalis_arts" target="_blank" class="bio-link-btn featured">
+        <div class="btn-inner-left">
+          <div class="btn-icon"><i class="fab fa-instagram"></i></div>
+          <span>DM on Instagram for Orders</span>
+        </div>
+        <i class="fas fa-chevron-right btn-chevron"></i>
+      </a>
+
+      <!-- Official Website & Catalog -->
+      <a href="index.html" class="bio-link-btn">
+        <div class="btn-inner-left">
+          <div class="btn-icon"><i class="fas fa-gem"></i></div>
+          <span>Explore Full Festive Collection</span>
+        </div>
+        <i class="fas fa-chevron-right btn-chevron"></i>
+      </a>
+
+      <!-- Interactive Space Visualizer -->
+      <a href="index.html#visualizer" class="bio-link-btn">
+        <div class="btn-inner-left">
+          <div class="btn-icon"><i class="fas fa-magic"></i></div>
+          <span>Decorate My Space (Interactive Studio)</span>
+        </div>
+        <i class="fas fa-chevron-right btn-chevron"></i>
+      </a>
+
+      <!-- WhatsApp Order / Inquiry -->
+      <a href="https://wa.me/918552939652?text=Namaste%20Rupali's%20Arts!%20I'm%20reaching%20out%20from%20your%20Instagram%20bio%20to%20inquire%20about%20handcrafted%20decor." target="_blank" class="bio-link-btn">
+        <div class="btn-inner-left">
+          <div class="btn-icon" style="color: #25d366;"><i class="fab fa-whatsapp"></i></div>
+          <span>Chat on WhatsApp (8552939652)</span>
+        </div>
+        <i class="fas fa-chevron-right btn-chevron"></i>
+      </a>
+
+      <!-- Customer Reviews -->
+      <a href="index.html#reviews" class="bio-link-btn">
+        <div class="btn-inner-left">
+          <div class="btn-icon"><i class="fas fa-star"></i></div>
+          <span>Customer Reviews & Photos</span>
+        </div>
+        <i class="fas fa-chevron-right btn-chevron"></i>
+      </a>
+    </div>
+
+    <!-- Social Icons -->
+    <div class="social-row">
+      <a href="https://www.instagram.com/rupalis_arts/" target="_blank" class="social-circ-btn" title="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://wa.me/918552939652" target="_blank" class="social-circ-btn" title="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+      <a href="index.html" class="social-circ-btn" title="Website">
+        <i class="fas fa-globe"></i>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bio-footer">
+      <p>© 2026 Rupali's Arts • Maharashtra, India</p>
+      <p style="margin-top: 0.25rem;">Handcrafted for auspicious celebrations</p>
+    </footer>
+  </div>
+
+</body>
+</html>

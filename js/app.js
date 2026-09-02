@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAmbianceAudio();
   initCustomOrderForm();
   initFaqAccordion();
+  initFestivalCountdown();
 });
 
 // ==========================================================================
@@ -111,11 +112,14 @@ function renderProducts(category = 'all', searchQuery = '') {
           ✨ ${product.badge}
         </span>
         <div class="quick-action-overlay">
-          <button class="card-action-btn" title="Quick View" onclick="openQuickView('${product.id}')">
-            <i class="fas fa-eye"></i>
+          <button class="card-action-btn" title="Quick View" onclick="openQuickView('${product.id}')" aria-label="Quick View ${product.name}">
+            <i class="fas fa-eye" aria-hidden="true"></i>
           </button>
-          <button class="card-action-btn" title="Add to Inquire Bag" onclick="addToInquiryBag('${product.id}')">
-            <i class="fas fa-bookmark"></i>
+          <button class="card-action-btn" title="Share Product" onclick="shareProduct('${product.id}')" aria-label="Share ${product.name}">
+            <i class="fas fa-share-nodes" aria-hidden="true"></i>
+          </button>
+          <button class="card-action-btn" title="Add to Inquire Bag" onclick="addToInquiryBag('${product.id}')" aria-label="Save ${product.name}">
+            <i class="fas fa-bookmark" aria-hidden="true"></i>
           </button>
         </div>
       </div>
@@ -281,11 +285,14 @@ window.openQuickView = function(productId) {
           </div>
         </div>
 
-        <div style="display: flex; gap: 0.75rem; margin-top: auto;">
-          <button class="btn-primary-insta" style="flex: 1;" onclick="orderProductViaInstagram('${product.id}')">
+        <div style="display: flex; gap: 0.75rem; margin-top: auto; flex-wrap: wrap;">
+          <button class="btn-primary-insta" style="flex: 1; min-width: 180px;" onclick="orderProductViaInstagram('${product.id}')">
             <i class="fab fa-instagram"></i> Buy Now (Instagram DM)
           </button>
-          <button class="btn-secondary-outline" onclick="addToInquiryBag('${product.id}')">
+          <button class="btn-secondary-outline" onclick="shareProduct('${product.id}')" title="Share with friends/family">
+            <i class="fas fa-share-nodes"></i> Share
+          </button>
+          <button class="btn-secondary-outline" onclick="addToInquiryBag('${product.id}')" title="Save to inquiry bag">
             <i class="fas fa-bookmark"></i> Save
           </button>
         </div>
@@ -295,6 +302,83 @@ window.openQuickView = function(productId) {
 
   modal.classList.add('active');
 };
+
+// ==========================================================================
+// 1-CLICK WHATSAPP & SOCIAL SHARE
+// ==========================================================================
+window.shareProduct = function(productId) {
+  const product = PRODUCTS_DATA.find(p => p.id === productId);
+  if (!product) return;
+
+  const shareTitle = `${product.name} | Rupali's Arts`;
+  const shareText = `Check out this gorgeous handcrafted ${product.name} (${product.subtitle}) by Rupali's Arts! Perfect for festive home decor.`;
+  const shareUrl = `${window.location.origin}${window.location.pathname}#collection`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: shareTitle,
+      text: shareText,
+      url: shareUrl
+    }).catch(() => {});
+  } else {
+    // WhatsApp Fallback
+    const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`;
+    
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(`${shareText} - ${shareUrl}`);
+    }
+    showToast('Link copied! Opening WhatsApp to share...');
+    setTimeout(() => {
+      window.open(whatsappShareUrl, '_blank');
+    }, 400);
+  }
+};
+
+// ==========================================================================
+// FESTIVAL COUNTDOWN & CELEBRATION SWITCHER
+// ==========================================================================
+function initFestivalCountdown() {
+  const daysEl = document.getElementById('festivalDays');
+  const hoursEl = document.getElementById('festivalHours');
+  const minsEl = document.getElementById('festivalMins');
+  const secsEl = document.getElementById('festivalSecs');
+  if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
+
+  // Next festive target (Diwali / Ganesh Utsav celebration target)
+  const now = new Date();
+  let targetYear = now.getFullYear();
+  // Target Diwali / Ganesh Utsav season
+  let targetDate = new Date(targetYear, 10, 1, 0, 0, 0); // November 1st
+  if (now > targetDate) {
+    targetDate = new Date(targetYear + 1, 10, 1, 0, 0, 0);
+  }
+
+  function updateTimer() {
+    const currentTime = new Date().getTime();
+    const distance = targetDate.getTime() - currentTime;
+
+    if (distance <= 0) {
+      daysEl.textContent = '00';
+      hoursEl.textContent = '00';
+      minsEl.textContent = '00';
+      secsEl.textContent = '00';
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    daysEl.textContent = String(days).padStart(2, '0');
+    hoursEl.textContent = String(hours).padStart(2, '0');
+    minsEl.textContent = String(minutes).padStart(2, '0');
+    secsEl.textContent = String(seconds).padStart(2, '0');
+  }
+
+  updateTimer();
+  setInterval(updateTimer, 1000);
+}
 
 // ==========================================================================
 // INQUIRY BAG / WISHLIST DRAWER
