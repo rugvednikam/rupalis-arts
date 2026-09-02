@@ -1,4 +1,5 @@
-// Rupali's Arts - Festive Golden Sparkle & Petal Particles
+// Rupali's Arts - Optimized Festive Golden Sparkle & Petal Particles
+// Battery-friendly with IntersectionObserver & High-DPI support
 
 class FestiveParticleSystem {
   constructor(canvasId) {
@@ -8,30 +9,69 @@ class FestiveParticleSystem {
     this.particles = [];
     this.sparkles = [];
     this.animationFrameId = null;
+    this.isVisible = true;
 
     this.resize();
-    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('resize', () => this.resize(), { passive: true });
+    
+    // Visibility optimization
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.pause();
+      } else if (this.isVisible) {
+        this.start();
+      }
+    });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          this.isVisible = entry.isIntersecting;
+          if (this.isVisible) {
+            this.start();
+          } else {
+            this.pause();
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(this.canvas);
+    }
+
     this.init();
-    this.animate();
+    this.start();
   }
 
   resize() {
     if (!this.canvas) return;
-    this.width = this.canvas.width = this.canvas.parentElement.offsetWidth;
-    this.height = this.canvas.height = this.canvas.parentElement.offsetHeight;
+    const parent = this.canvas.parentElement;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2x for mobile efficiency
+    
+    this.width = parent.offsetWidth;
+    this.height = parent.offsetHeight;
+
+    this.canvas.width = this.width * dpr;
+    this.canvas.height = this.height * dpr;
+    this.canvas.style.width = `${this.width}px`;
+    this.canvas.style.height = `${this.height}px`;
+
+    this.ctx.scale(dpr, dpr);
+    this.init();
   }
 
   init() {
     this.particles = [];
     this.sparkles = [];
 
+    const isMobile = this.width < 768;
+    const sparkleCount = isMobile ? Math.floor(this.width / 55) : Math.floor(this.width / 35);
+    const petalCount = isMobile ? 6 : 14;
+
     // Sparkles
-    const sparkleCount = Math.floor(this.width / 40);
     for (let i = 0; i < sparkleCount; i++) {
       this.sparkles.push({
         x: Math.random() * this.width,
         y: Math.random() * this.height,
-        size: Math.random() * 2.5 + 1,
+        size: Math.random() * 2 + 1,
         color: ['#fbbf24', '#f59e0b', '#fde68a', '#ffffff'][Math.floor(Math.random() * 4)],
         opacity: Math.random(),
         speed: Math.random() * 0.02 + 0.005,
@@ -41,58 +81,65 @@ class FestiveParticleSystem {
     }
 
     // Floating Petals
-    const petalCount = 12;
     for (let i = 0; i < petalCount; i++) {
       this.particles.push({
         x: Math.random() * this.width,
         y: Math.random() * this.height,
-        radiusX: Math.random() * 6 + 4,
-        radiusY: Math.random() * 4 + 3,
+        radiusX: Math.random() * 5 + 3,
+        radiusY: Math.random() * 4 + 2,
         rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.03,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: Math.random() * 0.4 + 0.2,
-        color: ['rgba(245, 158, 11, 0.45)', 'rgba(251, 191, 36, 0.35)', 'rgba(239, 68, 68, 0.3)'][Math.floor(Math.random() * 3)]
+        rotSpeed: (Math.random() - 0.5) * 0.02,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: Math.random() * 0.35 + 0.15,
+        color: ['rgba(245, 158, 11, 0.4)', 'rgba(251, 191, 36, 0.3)', 'rgba(239, 68, 68, 0.25)'][Math.floor(Math.random() * 3)]
       });
     }
   }
 
+  start() {
+    if (!this.animationFrameId) {
+      this.animate();
+    }
+  }
+
+  pause() {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+  }
+
   animate() {
-    if (!this.ctx) return;
+    if (!this.ctx || !this.isVisible) return;
     this.ctx.clearRect(0, 0, this.width, this.height);
 
-    // Draw & Update Sparkles
+    // Sparkles
     for (let s of this.sparkles) {
       s.opacity = (Math.sin(Date.now() * s.twinkleSpeed + s.twinkleOffset) + 1) / 2;
-      s.y -= s.speed * 20;
+      s.y -= s.speed * 18;
       if (s.y < 0) s.y = this.height;
 
       this.ctx.save();
       this.ctx.fillStyle = s.color;
-      this.ctx.globalAlpha = s.opacity * 0.8;
+      this.ctx.globalAlpha = s.opacity * 0.75;
       this.ctx.beginPath();
       this.ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-      this.ctx.fill();
-
-      // Soft glow
-      this.ctx.shadowColor = '#fbbf24';
-      this.ctx.shadowBlur = 8;
       this.ctx.fill();
       this.ctx.restore();
     }
 
-    // Draw & Update Petals
+    // Floating Petals
     for (let p of this.particles) {
-      p.x += p.vx + Math.sin(Date.now() * 0.001 + p.y * 0.01) * 0.3;
+      p.x += p.vx + Math.sin(Date.now() * 0.001 + p.y * 0.01) * 0.25;
       p.y += p.vy;
       p.rotation += p.rotSpeed;
 
-      if (p.y > this.height + 20) {
-        p.y = -20;
+      if (p.y > this.height + 15) {
+        p.y = -15;
         p.x = Math.random() * this.width;
       }
-      if (p.x < -20) p.x = this.width + 20;
-      if (p.x > this.width + 20) p.x = -20;
+      if (p.x < -15) p.x = this.width + 15;
+      if (p.x > this.width + 15) p.x = -15;
 
       this.ctx.save();
       this.ctx.translate(p.x, p.y);
@@ -105,12 +152,6 @@ class FestiveParticleSystem {
     }
 
     this.animationFrameId = requestAnimationFrame(() => this.animate());
-  }
-
-  destroy() {
-    if (this.animationFrameId) {
-      cancelAnimationFrame(this.animationFrameId);
-    }
   }
 }
 

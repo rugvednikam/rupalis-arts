@@ -1318,7 +1318,9 @@ button {
   position: absolute;
   cursor: grab;
   touch-action: none;
-  transition: filter 0.3s ease, transform 0.1s ease;
+  transition: filter 0.3s ease;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .canvas-decor-element:active {
@@ -1330,10 +1332,51 @@ button {
   outline-offset: 4px;
 }
 
+.decor-element-controls {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  display: none;
+  gap: 4px;
+  z-index: 10;
+}
+
+.canvas-decor-element.active .decor-element-controls {
+  display: flex;
+}
+
+.el-ctrl-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.el-ctrl-btn.rotate {
+  background: var(--amber-600);
+}
+
+.el-ctrl-btn.remove {
+  background: #ef4444;
+}
+
+.el-ctrl-btn:hover {
+  transform: scale(1.15);
+}
+
 .canvas-decor-element img {
   border-radius: 50%;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
   pointer-events: none;
+  transition: transform 0.2s ease;
 }
 
 .canvas-diya-flame {

@@ -1,4 +1,5 @@
 // Rupali's Arts - "Decorate My Space" Visualizer Studio
+// Optimized for Mobile Touch, Tablet, and Desktop Drag & Drop
 
 class DecoratorStudio {
   constructor() {
@@ -27,7 +28,7 @@ class DecoratorStudio {
 
     // Presets
     this.bgPresetButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', () => {
         this.bgPresetButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const bgId = btn.dataset.bg;
@@ -66,6 +67,16 @@ class DecoratorStudio {
       this.orderSetupBtn.addEventListener('click', () => this.orderCurrentSetup());
     }
 
+    // Deselect on clicking stage empty area
+    this.canvasArea.addEventListener('click', (e) => {
+      if (e.target === this.canvasArea) {
+        this.selectItem(null);
+      }
+    });
+
+    // Resize listener to keep elements in bounds
+    window.addEventListener('resize', () => this.keepElementsInBounds(), { passive: true });
+
     // Default setup
     this.initDefaultDecor();
   }
@@ -95,7 +106,7 @@ class DecoratorStudio {
   setNightMode(isNight) {
     const flames = this.canvasArea.querySelectorAll('.canvas-diya-flame');
     flames.forEach(f => {
-      f.style.opacity = isNight ? '1' : '0.7';
+      f.style.opacity = isNight ? '1' : '0.75';
       f.style.filter = isNight 
         ? 'drop-shadow(0 0 16px rgba(255, 179, 0, 1)) drop-shadow(0 0 30px rgba(255, 87, 34, 0.9))' 
         : 'drop-shadow(0 0 8px rgba(255, 179, 0, 0.7))';
@@ -107,28 +118,51 @@ class DecoratorStudio {
     if (!product) return;
 
     const canvasRect = this.canvasArea.getBoundingClientRect();
-    const x = initialX !== undefined ? initialX : (canvasRect.width / 2 - 60) + (Math.random() * 40 - 20);
-    const y = initialY !== undefined ? initialY : (canvasRect.height / 2 - 60) + (Math.random() * 40 - 20);
+    const isMobile = canvasRect.width < 500;
+
+    // Responsive element scale
+    let size = isMobile ? 100 : 130;
+    let isDiya = product.category === 'diyas';
+    if (isDiya) size = isMobile ? 65 : 80;
+    if (product.category === 'detachable') size = isMobile ? 115 : 150;
+
+    const x = initialX !== undefined ? initialX : Math.max(10, (canvasRect.width / 2 - size / 2) + (Math.random() * 40 - 20));
+    const y = initialY !== undefined ? initialY : Math.max(10, (canvasRect.height / 2 - size / 2) + (Math.random() * 40 - 20));
 
     const el = document.createElement('div');
     el.className = 'canvas-decor-element';
     el.dataset.id = product.id;
+    el.dataset.rotation = '0';
     el.style.left = `${x}px`;
     el.style.top = `${y}px`;
-
-    // Size based on product type
-    let size = 130;
-    let isDiya = product.category === 'diyas';
-    if (isDiya) size = 80;
-    if (product.category === 'detachable') size = 150;
-
     el.style.width = `${size}px`;
     el.style.height = `${size}px`;
 
     el.innerHTML = `
+      <div class="decor-element-controls">
+        <button class="el-ctrl-btn rotate" title="Rotate"><i class="fas fa-rotate-right"></i></button>
+        <button class="el-ctrl-btn remove" title="Remove"><i class="fas fa-times"></i></button>
+      </div>
       <img src="${product.image}" alt="${product.name}" style="width:100%; height:100%; object-fit:contain;" />
       ${isDiya ? '<div class="canvas-diya-flame animate-flame"></div>' : ''}
     `;
+
+    // Rotate button handler
+    const rotateBtn = el.querySelector('.el-ctrl-btn.rotate');
+    rotateBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      let rot = (parseInt(el.dataset.rotation, 10) || 0) + 45;
+      el.dataset.rotation = rot;
+      const img = el.querySelector('img');
+      if (img) img.style.transform = `rotate(${rot}deg)`;
+    });
+
+    // Remove button handler
+    const removeBtn = el.querySelector('.el-ctrl-btn.remove');
+    removeBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.removeItem(el);
+    });
 
     this.canvasArea.appendChild(el);
     this.placedItems.push({ element: el, product: product });
@@ -147,8 +181,17 @@ class DecoratorStudio {
     }
   }
 
+  removeItem(el) {
+    this.placedItems = this.placedItems.filter(item => item.element !== el);
+    el.remove();
+    this.activeItem = null;
+  }
+
   attachDragListeners(el) {
     const onStart = (e) => {
+      // Don't drag if clicking mini controls
+      if (e.target.closest('.decor-element-controls')) return;
+
       this.isDragging = true;
       this.selectItem(el);
 
@@ -168,7 +211,9 @@ class DecoratorStudio {
 
     const onMove = (e) => {
       if (!this.isDragging) return;
-      if (e.type.includes('touch')) e.preventDefault();
+      if (e.type.includes('touch')) {
+        e.preventDefault(); // Stop page scrolling when moving decor
+      }
 
       const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
       const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
@@ -182,9 +227,9 @@ class DecoratorStudio {
       const canvasRect = this.canvasArea.getBoundingClientRect();
       const elRect = el.getBoundingClientRect();
 
-      // Keep within bounds
-      const boundedX = Math.max(-20, Math.min(newX, canvasRect.width - elRect.width + 20));
-      const boundedY = Math.max(-20, Math.min(newY, canvasRect.height - elRect.height + 20));
+      // Bounded movement
+      const boundedX = Math.max(-10, Math.min(newX, canvasRect.width - elRect.width + 10));
+      const boundedY = Math.max(-10, Math.min(newY, canvasRect.height - elRect.height + 10));
 
       el.style.left = `${boundedX}px`;
       el.style.top = `${boundedY}px`;
@@ -202,6 +247,22 @@ class DecoratorStudio {
     el.addEventListener('touchstart', onStart, { passive: false });
   }
 
+  keepElementsInBounds() {
+    const canvasRect = this.canvasArea.getBoundingClientRect();
+    this.placedItems.forEach(({ element }) => {
+      const elRect = element.getBoundingClientRect();
+      let left = parseFloat(element.style.left) || 0;
+      let top = parseFloat(element.style.top) || 0;
+
+      if (left + elRect.width > canvasRect.width) {
+        element.style.left = `${Math.max(10, canvasRect.width - elRect.width - 10)}px`;
+      }
+      if (top + elRect.height > canvasRect.height) {
+        element.style.top = `${Math.max(10, canvasRect.height - elRect.height - 10)}px`;
+      }
+    });
+  }
+
   clearCanvas() {
     this.canvasArea.innerHTML = '';
     this.placedItems = [];
@@ -210,21 +271,27 @@ class DecoratorStudio {
 
   initDefaultDecor() {
     this.clearCanvas();
-    // Pre-place a nice centerpiece and two diyas
     setTimeout(() => {
       const rect = this.canvasArea.getBoundingClientRect();
       const midX = rect.width / 2;
       const midY = rect.height / 2;
+      const isMobile = rect.width < 500;
 
-      this.addItemToCanvas('woolen-rangoli-small', midX - 65, midY - 65);
-      this.addItemToCanvas('handmade-diya-holders', midX - 130, midY - 35);
-      this.addItemToCanvas('handmade-diya-holders', midX + 60, midY - 35);
-    }, 200);
+      if (isMobile) {
+        this.addItemToCanvas('woolen-rangoli-small', midX - 50, midY - 60);
+        this.addItemToCanvas('handmade-diya-holders', midX - 90, midY - 20);
+        this.addItemToCanvas('handmade-diya-holders', midX + 30, midY - 20);
+      } else {
+        this.addItemToCanvas('woolen-rangoli-small', midX - 65, midY - 65);
+        this.addItemToCanvas('handmade-diya-holders', midX - 130, midY - 35);
+        this.addItemToCanvas('handmade-diya-holders', midX + 60, midY - 35);
+      }
+    }, 250);
   }
 
   orderCurrentSetup() {
     if (this.placedItems.length === 0) {
-      alert("Please place some decor items on the stage before ordering!");
+      alert("Please place some decor items on the floor before ordering!");
       return;
     }
 
@@ -244,8 +311,9 @@ class DecoratorStudio {
     const encodedMsg = encodeURIComponent(message);
     const igDirectUrl = `https://ig.me/m/rupalis_arts?text=${encodedMsg}`;
     
-    // Copy to clipboard for easy pasting if app opens directly to thread
-    navigator.clipboard?.writeText(message);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(message).catch(() => {});
+    }
     
     window.open(igDirectUrl, '_blank');
   }
