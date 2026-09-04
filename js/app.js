@@ -103,7 +103,7 @@ function initNavbar() {
     }
   });
 
-  // Touch Swipe Gesture: Swipe right to dismiss drawer
+  // Touch Swipe Gesture: Swipe left to dismiss left-side drawer
   let touchStartX = 0;
   let touchStartY = 0;
   let touchEndX = 0;
@@ -120,9 +120,9 @@ function initNavbar() {
     const deltaX = touchEndX - touchStartX;
     const deltaY = Math.abs(touchEndY - touchStartY);
 
-    // Swiped right by at least 50px and horizontally dominant
-    if (deltaX > 50 && deltaX > deltaY) {
-      closeMobileSidebar();
+    // Swiped left by at least 40px and horizontally dominant
+    if (deltaX < -40 && Math.abs(deltaX) > deltaY) {
+      window.closeMobileSidebar();
     }
   }, { passive: true });
 
