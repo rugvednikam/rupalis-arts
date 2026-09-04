@@ -16,55 +16,143 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================================================
-// NAVBAR & HEADER SCROLL
+// NAVBAR & MOBILE SLIDE-OUT SIDEBAR DRAWER
 // ==========================================================================
 function initNavbar() {
   const header = document.querySelector('.site-header');
   const mobileToggle = document.getElementById('mobileToggle');
-  const navMenu = document.querySelector('.nav-menu');
+  const mobileSidebar = document.getElementById('mobileSidebar');
+  const mobileBackdrop = document.getElementById('mobileSidebarBackdrop');
+  const closeSidebarBtn = document.getElementById('closeMobileSidebarBtn');
+  const mobileInquiryBtn = document.getElementById('mobileSidebarInquiryBtn');
+  const mobileAudioBtn = document.getElementById('mobileSidebarAudioBtn');
 
+  // Sticky header shadow on scroll
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
+    if (window.scrollY > 30) {
       header?.classList.add('scrolled');
     } else {
       header?.classList.remove('scrolled');
     }
-  });
+  }, { passive: true });
 
+  // Mobile Sidebar Open / Close Functions
+  window.openMobileSidebar = function() {
+    mobileSidebar?.classList.add('open');
+    mobileBackdrop?.classList.add('active');
+    document.body.classList.add('mobile-sidebar-locked');
+    mobileToggle?.setAttribute('aria-expanded', 'true');
+  };
+
+  window.closeMobileSidebar = function() {
+    mobileSidebar?.classList.remove('open');
+    mobileBackdrop?.classList.remove('active');
+    document.body.classList.remove('mobile-sidebar-locked');
+    mobileToggle?.setAttribute('aria-expanded', 'false');
+  };
+
+  // Toggle button click
   mobileToggle?.addEventListener('click', (e) => {
     e.stopPropagation();
-    const isActive = navMenu?.classList.toggle('active');
-    const icon = mobileToggle.querySelector('i');
-    if (icon) {
-      icon.className = isActive ? 'fas fa-times' : 'fas fa-bars';
+    if (mobileSidebar?.classList.contains('open')) {
+      closeMobileSidebar();
+    } else {
+      openMobileSidebar();
     }
   });
 
-  // Close mobile menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (navMenu?.classList.contains('active') && !navMenu.contains(e.target) && !mobileToggle?.contains(e.target)) {
-      navMenu.classList.remove('active');
-      const icon = mobileToggle?.querySelector('i');
-      if (icon) icon.className = 'fas fa-bars';
+  // Close button & backdrop click
+  closeSidebarBtn?.addEventListener('click', closeMobileSidebar);
+  mobileBackdrop?.addEventListener('click', closeMobileSidebar);
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileSidebar?.classList.contains('open')) {
+      closeMobileSidebar();
     }
   });
 
-  // Smooth scroll and auto-close menu
+  // Touch Swipe Gesture: Swipe right to dismiss drawer
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  let touchEndY = 0;
+
+  mobileSidebar?.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  mobileSidebar?.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = Math.abs(touchEndY - touchStartY);
+
+    // Swiped right by at least 50px and horizontally dominant
+    if (deltaX > 50 && deltaX > deltaY) {
+      closeMobileSidebar();
+    }
+  }, { passive: true });
+
+  // Sidebar Inquiry Bag Shortcut
+  mobileInquiryBtn?.addEventListener('click', () => {
+    closeMobileSidebar();
+    const inquiryDrawer = document.getElementById('inquiryDrawer');
+    if (inquiryDrawer) {
+      inquiryDrawer.classList.add('active');
+      if (typeof renderInquiryDrawerItems === 'function') {
+        renderInquiryDrawerItems();
+      }
+    }
+  });
+
+  // Sidebar Festive Audio Chimes Shortcut
+  mobileAudioBtn?.addEventListener('click', () => {
+    const mainAudioBtn = document.getElementById('btnAudioAmbiance');
+    if (mainAudioBtn) {
+      mainAudioBtn.click();
+      const statusText = document.getElementById('mobileAudioStatus');
+      const icon = document.getElementById('mobileAudioIcon');
+      if (isAudioPlaying) {
+        if (statusText) statusText.textContent = 'Playing ✨';
+        if (icon) icon.className = 'fas fa-volume-up';
+      } else {
+        if (statusText) statusText.textContent = 'Tap to play';
+        if (icon) icon.className = 'fas fa-music';
+      }
+    }
+  });
+
+  // Smooth scroll and auto-close sidebar on link click
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
       if (targetId === '#' || !targetId) return;
-      
+
       const targetEl = document.querySelector(targetId);
       if (targetEl) {
         e.preventDefault();
-        targetEl.scrollIntoView({ behavior: 'smooth' });
-        navMenu?.classList.remove('active');
-        const icon = mobileToggle?.querySelector('i');
-        if (icon) icon.className = 'fas fa-bars';
+        closeMobileSidebar();
+        
+        // Smooth scroll with offset for sticky header
+        const headerHeight = header ? header.offsetHeight : 70;
+        const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
       }
     });
   });
+
+  // Auto-close sidebar if viewport resizes above tablet breakpoint
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && mobileSidebar?.classList.contains('open')) {
+      closeMobileSidebar();
+    }
+  }, { passive: true });
 }
 
 // ==========================================================================

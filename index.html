@@ -1002,6 +1002,137 @@
     </div>
   </aside>
 
+  <!-- Mobile Slide-Out Sidebar Drawer (Off-Canvas Right) -->
+  <div id="mobileSidebarBackdrop" class="mobile-sidebar-backdrop" aria-hidden="true"></div>
+
+  <aside id="mobileSidebar" class="mobile-sidebar" role="dialog" aria-modal="true" aria-label="Mobile Navigation Sidebar">
+    <div class="mobile-sidebar-header">
+      <a href="#hero" class="brand-logo" id="mobileSidebarLogo" aria-label="Rupali's Arts Home">
+        <div class="logo-diya-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3C12 3 8 7.5 8 11C8 13.2 9.8 15 12 15C14.2 15 16 13.2 16 11C16 7.5 12 3 12 3Z" fill="#ffb703" class="animate-flame"/>
+            <path d="M4 14C4 18 7.58 21 12 21C16.42 21 20 18 20 14H4Z" fill="#fbbf24"/>
+          </svg>
+        </div>
+        <div class="brand-text-group">
+          <span class="brand-title" style="font-size: 1.35rem; color: #fff;">Rupali's Arts</span>
+          <span class="brand-subtitle" style="color: var(--gold-300);">Handcrafted Decor</span>
+        </div>
+      </a>
+      <button id="closeMobileSidebarBtn" class="mobile-sidebar-close" aria-label="Close mobile navigation sidebar">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="mobile-sidebar-body">
+      <!-- Quick Utility Tools (Inquiry Bag & Ambiance Audio) -->
+      <div class="mobile-sidebar-quick-tools">
+        <button id="mobileSidebarInquiryBtn" class="mobile-tool-card" aria-label="Open saved inquiry bag">
+          <div class="tool-icon-wrap">
+            <i class="fas fa-bookmark" aria-hidden="true"></i>
+            <span class="badge-count inquiry-badge-count" style="display: none;">0</span>
+          </div>
+          <div class="tool-info">
+            <span class="tool-title">Inquiry Bag</span>
+            <span class="tool-sub">Saved decor</span>
+          </div>
+        </button>
+
+        <button id="mobileSidebarAudioBtn" class="mobile-tool-card" aria-label="Toggle festive ambiance chimes">
+          <div class="tool-icon-wrap">
+            <i class="fas fa-music" id="mobileAudioIcon" aria-hidden="true"></i>
+          </div>
+          <div class="tool-info">
+            <span class="tool-title">Festive Chimes</span>
+            <span class="tool-sub" id="mobileAudioStatus">Tap to play</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="mobile-sidebar-nav" aria-label="Mobile Menu Navigation">
+        <span class="mobile-nav-heading">Explore Studio</span>
+        <ul class="mobile-nav-list">
+          <li>
+            <a href="#collection" class="mobile-nav-item">
+              <span class="item-icon"><i class="fas fa-layer-group" aria-hidden="true"></i></span>
+              <span class="item-label">Decor Collection</span>
+              <span class="item-pill">Trending</span>
+            </a>
+          </li>
+          <li>
+            <a href="#visualizer" class="mobile-nav-item">
+              <span class="item-icon"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i></span>
+              <span class="item-label">Space Visualizer</span>
+              <span class="item-pill" style="background: rgba(251, 191, 36, 0.2); color: var(--gold-300); border-color: var(--gold-400);">Studio</span>
+            </a>
+          </li>
+          <li>
+            <a href="#why-woolen" class="mobile-nav-item">
+              <span class="item-icon"><i class="fas fa-feather-pointed" aria-hidden="true"></i></span>
+              <span class="item-label">Why Woolen Decor?</span>
+              <i class="fas fa-chevron-right item-arrow" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#spotlight" class="mobile-nav-item">
+              <span class="item-icon"><i class="fab fa-instagram" aria-hidden="true"></i></span>
+              <span class="item-label">Instagram Spotlight</span>
+              <i class="fas fa-chevron-right item-arrow" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#faq" class="mobile-nav-item">
+              <span class="item-icon"><i class="fas fa-circle-question" aria-hidden="true"></i></span>
+              <span class="item-label">FAQs & Care Guide</span>
+              <i class="fas fa-chevron-right item-arrow" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#reviews" class="mobile-nav-item">
+              <span class="item-icon"><i class="fas fa-star" aria-hidden="true"></i></span>
+              <span class="item-label">Customer Reviews</span>
+              <i class="fas fa-chevron-right item-arrow" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#custom-order" class="mobile-nav-item">
+              <span class="item-icon"><i class="fas fa-palette" aria-hidden="true"></i></span>
+              <span class="item-label">Custom Inquiry</span>
+              <i class="fas fa-chevron-right item-arrow" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="bio.html" class="mobile-nav-item">
+              <span class="item-icon"><i class="fas fa-link" aria-hidden="true"></i></span>
+              <span class="item-label">Instagram Link in Bio</span>
+              <i class="fas fa-chevron-right item-arrow" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Mobile Sidebar Footer with Direct Instagram DM & WhatsApp -->
+    <div class="mobile-sidebar-footer">
+      <a href="https://ig.me/m/rupalis_arts" target="_blank" rel="noopener noreferrer" class="btn-sidebar-insta" aria-label="Direct message Rupali's Arts on Instagram">
+        <i class="fab fa-instagram fa-lg" aria-hidden="true"></i>
+        <span>DM on Instagram @rupalis_arts</span>
+      </a>
+
+      <a href="https://wa.me/918552939652?text=Hello%20Rupali's%20Arts!%20I%20am%20interested%20in%20your%20handcrafted%20woolen%20rangolis%20and%20aasans." target="_blank" rel="noopener noreferrer" class="btn-sidebar-whatsapp" aria-label="Message Rupali's Arts on WhatsApp">
+        <i class="fab fa-whatsapp fa-lg" aria-hidden="true"></i>
+        <span>WhatsApp: +91 8552939652</span>
+      </a>
+
+      <div class="mobile-sidebar-badge-strip">
+        <span>🚚 Express Shipping</span>
+        <span>•</span>
+        <span>💯 100% Reusable</span>
+      </div>
+    </div>
+  </aside>
+
   <!-- Floating Instagram Quick Action Button -->
   <a href="https://ig.me/m/rupalis_arts" target="_blank" rel="noopener noreferrer" class="floating-insta-btn" title="Chat on Instagram DM" aria-label="Order on Instagram DM @rupalis_arts">
     <i class="fab fa-instagram fa-lg" aria-hidden="true"></i>
