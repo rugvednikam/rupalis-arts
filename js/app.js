@@ -1,6 +1,57 @@
 // Rupali's Arts - Main Application Logic
 // Direct Instagram DM redirection, catalog filtering, quick view & inquiry bag
 
+// Global Sidebar Control Functions
+window.openMobileSidebar = function(e) {
+  if (e) e.stopPropagation();
+  const mobileSidebar = document.getElementById('mobileSidebar');
+  const mobileBackdrop = document.getElementById('mobileSidebarBackdrop');
+  const mobileToggle = document.getElementById('mobileToggle');
+
+  if (mobileSidebar) {
+    mobileSidebar.classList.add('open');
+  }
+  if (mobileBackdrop) {
+    mobileBackdrop.classList.add('active');
+  }
+  document.body.classList.add('mobile-sidebar-locked');
+  if (mobileToggle) {
+    mobileToggle.setAttribute('aria-expanded', 'true');
+    const icon = mobileToggle.querySelector('i');
+    if (icon) icon.className = 'fas fa-times';
+  }
+};
+
+window.closeMobileSidebar = function(e) {
+  if (e) e.stopPropagation();
+  const mobileSidebar = document.getElementById('mobileSidebar');
+  const mobileBackdrop = document.getElementById('mobileSidebarBackdrop');
+  const mobileToggle = document.getElementById('mobileToggle');
+
+  if (mobileSidebar) {
+    mobileSidebar.classList.remove('open');
+  }
+  if (mobileBackdrop) {
+    mobileBackdrop.classList.remove('active');
+  }
+  document.body.classList.remove('mobile-sidebar-locked');
+  if (mobileToggle) {
+    mobileToggle.setAttribute('aria-expanded', 'false');
+    const icon = mobileToggle.querySelector('i');
+    if (icon) icon.className = 'fas fa-bars';
+  }
+};
+
+window.toggleMobileSidebar = function(e) {
+  if (e) e.stopPropagation();
+  const mobileSidebar = document.getElementById('mobileSidebar');
+  if (mobileSidebar && mobileSidebar.classList.contains('open')) {
+    window.closeMobileSidebar(e);
+  } else {
+    window.openMobileSidebar(e);
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   renderProducts('all');
@@ -36,34 +87,14 @@ function initNavbar() {
     }
   }, { passive: true });
 
-  // Mobile Sidebar Open / Close Functions
-  window.openMobileSidebar = function() {
-    mobileSidebar?.classList.add('open');
-    mobileBackdrop?.classList.add('active');
-    document.body.classList.add('mobile-sidebar-locked');
-    mobileToggle?.setAttribute('aria-expanded', 'true');
-  };
-
-  window.closeMobileSidebar = function() {
-    mobileSidebar?.classList.remove('open');
-    mobileBackdrop?.classList.remove('active');
-    document.body.classList.remove('mobile-sidebar-locked');
-    mobileToggle?.setAttribute('aria-expanded', 'false');
-  };
-
   // Toggle button click
   mobileToggle?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (mobileSidebar?.classList.contains('open')) {
-      closeMobileSidebar();
-    } else {
-      openMobileSidebar();
-    }
+    window.toggleMobileSidebar(e);
   });
 
   // Close button & backdrop click
-  closeSidebarBtn?.addEventListener('click', closeMobileSidebar);
-  mobileBackdrop?.addEventListener('click', closeMobileSidebar);
+  closeSidebarBtn?.addEventListener('click', (e) => window.closeMobileSidebar(e));
+  mobileBackdrop?.addEventListener('click', (e) => window.closeMobileSidebar(e));
 
   // Close on Escape key
   document.addEventListener('keydown', (e) => {
