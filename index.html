@@ -294,9 +294,9 @@
   <!-- Top Announcement Bar -->
   <aside class="announcement-bar" aria-label="Announcement">
     <div class="announcement-content">
-      <div style="display: flex; align-items: center; gap: 0.6rem;">
+      <div class="announcement-text-group">
         <span class="announcement-badge">✨ Festive Collection Live</span>
-        <span>Handmade with Love • 100% Reusable • Pan-India Express Shipping</span>
+        <span class="announcement-tagline">Handmade with Love • 100% Reusable • Pan-India Express Shipping</span>
       </div>
       <div class="announcement-links">
         <a href="https://www.instagram.com/rupalis_arts/" target="_blank" rel="noopener noreferrer" class="announcement-link" aria-label="Visit Rupali's Arts on Instagram">
@@ -340,7 +340,7 @@
 
         <!-- Nav Actions -->
         <div class="nav-actions">
-          <button id="btnAudioAmbiance" class="action-btn" title="Toggle Festive Chimes" aria-label="Toggle festive ambient chimes">
+          <button id="btnAudioAmbiance" class="action-btn header-audio-btn" title="Toggle Festive Chimes" aria-label="Toggle festive ambient chimes">
             <i class="fas fa-volume-mute" aria-hidden="true"></i>
           </button>
           
@@ -354,7 +354,7 @@
             <span>DM on Instagram</span>
           </a>
 
-          <button id="mobileToggle" class="action-btn mobile-toggle" title="Menu" aria-label="Toggle navigation menu" onclick="window.toggleMobileSidebar ? window.toggleMobileSidebar(event) : null">
+          <button id="mobileToggle" class="action-btn mobile-toggle" title="Menu" aria-label="Toggle navigation menu" aria-expanded="false">
             <i class="fas fa-bars" aria-hidden="true"></i>
           </button>
         </div>
@@ -1002,12 +1002,12 @@
     </div>
   </aside>
 
-  <!-- Mobile Slide-Out Sidebar Drawer (Off-Canvas Right) -->
-  <div id="mobileSidebarBackdrop" class="mobile-sidebar-backdrop" aria-hidden="true" onclick="window.closeMobileSidebar ? window.closeMobileSidebar(event) : null"></div>
+  <!-- Mobile Slide-Out Sidebar Drawer (Off-Canvas Left) -->
+  <div id="mobileSidebarBackdrop" class="mobile-sidebar-backdrop" aria-hidden="true"></div>
 
   <aside id="mobileSidebar" class="mobile-sidebar" role="dialog" aria-modal="true" aria-label="Mobile Navigation Sidebar">
     <div class="mobile-sidebar-header">
-      <a href="#hero" class="brand-logo" id="mobileSidebarLogo" aria-label="Rupali's Arts Home" onclick="window.closeMobileSidebar ? window.closeMobileSidebar(event) : null">
+      <a href="#hero" class="brand-logo" id="mobileSidebarLogo" aria-label="Rupali's Arts Home">
         <div class="logo-diya-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M12 3C12 3 8 7.5 8 11C8 13.2 9.8 15 12 15C14.2 15 16 13.2 16 11C16 7.5 12 3 12 3Z" fill="#ffb703" class="animate-flame"/>
@@ -1019,7 +1019,7 @@
           <span class="brand-subtitle" style="color: var(--gold-300);">Handcrafted Decor</span>
         </div>
       </a>
-      <button id="closeMobileSidebarBtn" class="mobile-sidebar-close" aria-label="Close mobile navigation sidebar" onclick="window.closeMobileSidebar ? window.closeMobileSidebar(event) : null">
+      <button id="closeMobileSidebarBtn" class="mobile-sidebar-close" aria-label="Close mobile navigation sidebar">
         <i class="fas fa-times" aria-hidden="true"></i>
       </button>
     </div>

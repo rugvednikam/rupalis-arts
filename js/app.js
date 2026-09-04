@@ -2,8 +2,10 @@
 // Direct Instagram DM redirection, catalog filtering, quick view & inquiry bag
 
 // Global Sidebar Control Functions
+let lastToggleTimestamp = 0;
+
 window.openMobileSidebar = function(e) {
-  if (e) e.stopPropagation();
+  if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
   const mobileSidebar = document.getElementById('mobileSidebar');
   const mobileBackdrop = document.getElementById('mobileSidebarBackdrop');
   const mobileToggle = document.getElementById('mobileToggle');
@@ -23,7 +25,7 @@ window.openMobileSidebar = function(e) {
 };
 
 window.closeMobileSidebar = function(e) {
-  if (e) e.stopPropagation();
+  if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
   const mobileSidebar = document.getElementById('mobileSidebar');
   const mobileBackdrop = document.getElementById('mobileSidebarBackdrop');
   const mobileToggle = document.getElementById('mobileToggle');
@@ -43,7 +45,11 @@ window.closeMobileSidebar = function(e) {
 };
 
 window.toggleMobileSidebar = function(e) {
-  if (e) e.stopPropagation();
+  if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+  const now = Date.now();
+  if (now - lastToggleTimestamp < 250) return;
+  lastToggleTimestamp = now;
+
   const mobileSidebar = document.getElementById('mobileSidebar');
   if (mobileSidebar && mobileSidebar.classList.contains('open')) {
     window.closeMobileSidebar(e);
