@@ -74,6 +74,9 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 body {
@@ -81,7 +84,9 @@ body {
   background-color: var(--cream-50);
   color: var(--text-body);
   line-height: 1.65;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
   position: relative;
   min-height: 100vh;
 }
@@ -1759,13 +1764,15 @@ button {
   justify-content: center;
   padding: 1.5rem;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s;
 }
 
 .modal-backdrop.active {
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 .modal-content-card {
@@ -1835,19 +1842,25 @@ button {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
-  max-width: 440px;
+  width: min(420px, 86vw);
+  max-width: 86vw;
   background: #fff;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
   z-index: 110;
   transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.35s;
   display: flex;
   flex-direction: column;
 }
 
 .inquiry-drawer.active {
-  transform: translateX(0);
+  transform: translateX(0) !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .drawer-header {
@@ -2065,12 +2078,14 @@ body.mobile-sidebar-locked {
   -webkit-backdrop-filter: blur(8px);
   z-index: 998;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.32s;
 }
 
 .mobile-sidebar-backdrop.active {
   opacity: 1 !important;
+  visibility: visible !important;
   pointer-events: auto !important;
 }
 
@@ -2092,13 +2107,19 @@ body.mobile-sidebar-locked {
   display: flex;
   flex-direction: column;
   transform: translateX(-100%);
-  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.32s;
   will-change: transform;
   box-sizing: border-box;
 }
 
 .mobile-sidebar.open {
   transform: translateX(0) !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .mobile-sidebar-header {
