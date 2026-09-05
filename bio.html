@@ -48,7 +48,6 @@
       overflow-x: hidden;
     }
 
-    /* Ambient Festive Glow */
     body::before {
       content: '';
       position: fixed;
@@ -68,7 +67,6 @@
       z-index: 2;
     }
 
-    /* Profile Header */
     .profile-avatar-wrapper {
       position: relative;
       margin-bottom: 1.25rem;
@@ -132,12 +130,11 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Links Stack */
     .links-stack {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.9rem;
       margin-bottom: 2.5rem;
     }
 
@@ -152,7 +149,7 @@
       border-radius: 16px;
       color: #fff;
       font-weight: 700;
-      font-size: 0.975rem;
+      font-size: 0.95rem;
       text-decoration: none;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(8px);
@@ -204,7 +201,6 @@
       font-size: 0.85rem;
     }
 
-    /* Social Icons Row */
     .social-row {
       display: flex;
       gap: 1.25rem;
@@ -242,7 +238,6 @@
 <body>
 
   <div class="bio-container">
-    <!-- Profile Avatar & Bio -->
     <div class="profile-avatar-wrapper">
       <img src="assets/images/sunflower-aasan-orange.jpg" alt="Rupali's Arts" class="profile-avatar" />
       <div class="avatar-diya-badge">🪔</div>
@@ -260,55 +255,62 @@
       🚚 Pan-India Delivery • Made with Love ❤️
     </p>
 
-    <!-- Link Buttons -->
     <div class="links-stack">
       <!-- Direct Instagram DM Order -->
       <a href="https://ig.me/m/rupalis_arts" target="_blank" class="bio-link-btn featured">
         <div class="btn-inner-left">
           <div class="btn-icon"><i class="fab fa-instagram"></i></div>
-          <span>DM on Instagram for Orders</span>
+          <span>DM on Instagram to Order</span>
         </div>
         <i class="fas fa-chevron-right btn-chevron"></i>
       </a>
 
-      <!-- Official Website & Catalog -->
-      <a href="index.html" class="bio-link-btn">
+      <!-- Full Collection -->
+      <a href="collection.html" class="bio-link-btn">
         <div class="btn-inner-left">
-          <div class="btn-icon"><i class="fas fa-gem"></i></div>
-          <span>Explore Full Festive Collection</span>
+          <div class="btn-icon"><i class="fas fa-layer-group"></i></div>
+          <span>Explore Handcrafted Collection</span>
         </div>
         <i class="fas fa-chevron-right btn-chevron"></i>
       </a>
 
-      <!-- Interactive Space Visualizer -->
-      <a href="index.html#visualizer" class="bio-link-btn">
+      <!-- Bespoke & Custom Sizes -->
+      <a href="custom-order.html" class="bio-link-btn">
         <div class="btn-inner-left">
-          <div class="btn-icon"><i class="fas fa-magic"></i></div>
-          <span>Decorate My Space (Interactive Studio)</span>
+          <div class="btn-icon"><i class="fas fa-palette"></i></div>
+          <span>Bespoke Sizes & Color Guide</span>
         </div>
         <i class="fas fa-chevron-right btn-chevron"></i>
       </a>
 
-      <!-- WhatsApp Order / Inquiry -->
+      <!-- Our Story -->
+      <a href="about.html" class="bio-link-btn">
+        <div class="btn-inner-left">
+          <div class="btn-icon"><i class="fas fa-heart"></i></div>
+          <span>Our Story & Artisanal Craft</span>
+        </div>
+        <i class="fas fa-chevron-right btn-chevron"></i>
+      </a>
+
+      <!-- Care Guide & FAQs -->
+      <a href="faq.html" class="bio-link-btn">
+        <div class="btn-inner-left">
+          <div class="btn-icon"><i class="fas fa-circle-question"></i></div>
+          <span>Woolen Care Guide & FAQs</span>
+        </div>
+        <i class="fas fa-chevron-right btn-chevron"></i>
+      </a>
+
+      <!-- WhatsApp Direct Chat -->
       <a href="https://wa.me/918552939652?text=Namaste%20Rupali's%20Arts!%20I'm%20reaching%20out%20from%20your%20Instagram%20bio%20to%20inquire%20about%20handcrafted%20decor." target="_blank" class="bio-link-btn">
         <div class="btn-inner-left">
           <div class="btn-icon" style="color: #25d366;"><i class="fab fa-whatsapp"></i></div>
-          <span>Chat on WhatsApp (8552939652)</span>
-        </div>
-        <i class="fas fa-chevron-right btn-chevron"></i>
-      </a>
-
-      <!-- Customer Reviews -->
-      <a href="index.html#reviews" class="bio-link-btn">
-        <div class="btn-inner-left">
-          <div class="btn-icon"><i class="fas fa-star"></i></div>
-          <span>Customer Reviews & Photos</span>
+          <span>WhatsApp Chat (+91 8552939652)</span>
         </div>
         <i class="fas fa-chevron-right btn-chevron"></i>
       </a>
     </div>
 
-    <!-- Social Icons -->
     <div class="social-row">
       <a href="https://www.instagram.com/rupalis_arts/" target="_blank" class="social-circ-btn" title="Instagram">
         <i class="fab fa-instagram"></i>
@@ -321,10 +323,9 @@
       </a>
     </div>
 
-    <!-- Footer -->
     <footer class="bio-footer">
       <p>© 2026 Rupali's Arts • Maharashtra, India</p>
-      <p style="margin-top: 0.25rem;">Handcrafted for auspicious celebrations</p>
+      <p style="margin-top: 0.25rem;">Handcrafted with love for auspicious celebrations</p>
     </footer>
   </div>
 

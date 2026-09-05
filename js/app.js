@@ -1,7 +1,7 @@
-// Rupali's Arts - Main Application Logic
-// Direct Instagram DM redirection, catalog filtering, quick view & inquiry bag
+// Rupali's Arts - Handcrafted Festive Home Decor
+// Main Application Logic - Direct Instagram DM redirection, catalog filtering, inquiry bag & multi-page navigation
 
-// Global Sidebar Control Functions
+// Global Mobile Sidebar Controls
 let lastToggleTimestamp = 0;
 
 window.openMobileSidebar = function(e) {
@@ -60,16 +60,16 @@ window.toggleMobileSidebar = function(e) {
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
-  renderProducts('all');
+  initActivePageNav();
+  renderProductsCatalog();
+  renderFeaturedProducts();
   initCategoryFilters();
   initSearch();
   initQuickViewModal();
   initInquiryDrawer();
   renderReviews();
-  initAmbianceAudio();
   initCustomOrderForm();
   initFaqAccordion();
-  initFestivalCountdown();
 });
 
 // ==========================================================================
@@ -82,7 +82,6 @@ function initNavbar() {
   const mobileBackdrop = document.getElementById('mobileSidebarBackdrop');
   const closeSidebarBtn = document.getElementById('closeMobileSidebarBtn');
   const mobileInquiryBtn = document.getElementById('mobileSidebarInquiryBtn');
-  const mobileAudioBtn = document.getElementById('mobileSidebarAudioBtn');
 
   // Sticky header shadow on scroll
   window.addEventListener('scroll', () => {
@@ -105,7 +104,7 @@ function initNavbar() {
   // Close on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && mobileSidebar?.classList.contains('open')) {
-      closeMobileSidebar();
+      window.closeMobileSidebar();
     }
   });
 
@@ -126,7 +125,6 @@ function initNavbar() {
     const deltaX = touchEndX - touchStartX;
     const deltaY = Math.abs(touchEndY - touchStartY);
 
-    // Swiped left by at least 40px and horizontally dominant
     if (deltaX < -40 && Math.abs(deltaX) > deltaY) {
       window.closeMobileSidebar();
     }
@@ -134,7 +132,7 @@ function initNavbar() {
 
   // Sidebar Inquiry Bag Shortcut
   mobileInquiryBtn?.addEventListener('click', () => {
-    closeMobileSidebar();
+    window.closeMobileSidebar();
     const inquiryDrawer = document.getElementById('inquiryDrawer');
     if (inquiryDrawer) {
       inquiryDrawer.classList.add('active');
@@ -144,92 +142,30 @@ function initNavbar() {
     }
   });
 
-  // Sidebar Festive Audio Chimes Shortcut
-  mobileAudioBtn?.addEventListener('click', () => {
-    const mainAudioBtn = document.getElementById('btnAudioAmbiance');
-    if (mainAudioBtn) {
-      mainAudioBtn.click();
-      const statusText = document.getElementById('mobileAudioStatus');
-      const icon = document.getElementById('mobileAudioIcon');
-      if (isAudioPlaying) {
-        if (statusText) statusText.textContent = 'Playing ✨';
-        if (icon) icon.className = 'fas fa-volume-up';
-      } else {
-        if (statusText) statusText.textContent = 'Tap to play';
-        if (icon) icon.className = 'fas fa-music';
-      }
-    }
-  });
-
-  // Smooth scroll and auto-close sidebar on link click
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if (targetId === '#' || !targetId) return;
-
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        closeMobileSidebar();
-        
-        // Smooth scroll with offset for sticky header
-        const headerHeight = header ? header.offsetHeight : 70;
-        const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
-
   // Auto-close sidebar if viewport resizes above tablet breakpoint
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 768 && mobileSidebar?.classList.contains('open')) {
-      closeMobileSidebar();
+    if (window.innerWidth > 1024 && mobileSidebar?.classList.contains('open')) {
+      window.closeMobileSidebar();
     }
   }, { passive: true });
 }
 
+// Active Page Nav Highlighting
+function initActivePageNav() {
+  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-link, .mobile-nav-item').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentPath || (currentPath === '' && href === 'index.html')) {
+      link.classList.add('active');
+    }
+  });
+}
+
 // ==========================================================================
-// RENDER PRODUCTS
+// RENDER PRODUCTS (CATALOG & FEATURED)
 // ==========================================================================
-function renderProducts(category = 'all', searchQuery = '') {
-  const grid = document.getElementById('productsGrid');
-  if (!grid) return;
-
-  let filtered = PRODUCTS_DATA;
-
-  if (category !== 'all') {
-    filtered = filtered.filter(p => p.category === category);
-  }
-
-  if (searchQuery.trim() !== '') {
-    const q = searchQuery.toLowerCase();
-    filtered = filtered.filter(p => 
-      p.name.toLowerCase().includes(q) || 
-      p.description.toLowerCase().includes(q) ||
-      p.subtitle.toLowerCase().includes(q) ||
-      p.categoryName.toLowerCase().includes(q)
-    );
-  }
-
-  if (filtered.length === 0) {
-    grid.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem;">
-        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🌸</div>
-        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--emerald-900); margin-bottom: 0.5rem;">No products match your search</h3>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Try browsing another category or connect with us directly on Instagram for custom designs.</p>
-        <button class="btn-primary-insta" onclick="openInstagramDM('Custom Design Inquiry')">
-          <i class="fab fa-instagram"></i> Ask on Instagram DM
-        </button>
-      </div>
-    `;
-    return;
-  }
-
-  grid.innerHTML = filtered.map(product => `
+function createProductCardHTML(product) {
+  return `
     <div class="product-card" data-id="${product.id}">
       <div class="product-image-container">
         <img src="${product.image}" alt="${product.name}" id="img-${product.id}" loading="lazy" />
@@ -243,7 +179,7 @@ function renderProducts(category = 'all', searchQuery = '') {
           <button class="card-action-btn" title="Share Product" onclick="shareProduct('${product.id}')" aria-label="Share ${product.name}">
             <i class="fas fa-share-nodes" aria-hidden="true"></i>
           </button>
-          <button class="card-action-btn" title="Add to Inquire Bag" onclick="addToInquiryBag('${product.id}')" aria-label="Save ${product.name}">
+          <button class="card-action-btn" title="Save to Inquiry Bag" onclick="addToInquiryBag('${product.id}')" aria-label="Save ${product.name}">
             <i class="fas fa-bookmark" aria-hidden="true"></i>
           </button>
         </div>
@@ -269,7 +205,7 @@ function renderProducts(category = 'all', searchQuery = '') {
           <div class="dm-tag">
             <i class="fab fa-instagram"></i> Direct DM Order
           </div>
-          <div class="custom-tag">✨ 100% Handcrafted</div>
+          <div class="custom-tag">100% Handcrafted</div>
         </div>
 
         <div class="product-card-actions">
@@ -282,7 +218,52 @@ function renderProducts(category = 'all', searchQuery = '') {
         </div>
       </div>
     </div>
-  `).join('');
+  `;
+}
+
+function renderProductsCatalog(category = 'all', searchQuery = '') {
+  const grid = document.getElementById('productsGrid');
+  if (!grid || typeof PRODUCTS_DATA === 'undefined') return;
+
+  let filtered = PRODUCTS_DATA;
+
+  if (category !== 'all') {
+    filtered = filtered.filter(p => p.category === category);
+  }
+
+  if (searchQuery.trim() !== '') {
+    const q = searchQuery.toLowerCase();
+    filtered = filtered.filter(p => 
+      p.name.toLowerCase().includes(q) || 
+      p.description.toLowerCase().includes(q) ||
+      p.subtitle.toLowerCase().includes(q) ||
+      p.categoryName.toLowerCase().includes(q)
+    );
+  }
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem;">
+        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🌸</div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--emerald-900); margin-bottom: 0.5rem;">No products match your search</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Try browsing another category or message Aunt Rupali directly on Instagram for custom designs.</p>
+        <button class="btn-primary-insta" onclick="openInstagramDM('Custom Design Inquiry')">
+          <i class="fab fa-instagram"></i> Ask on Instagram DM
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(product => createProductCardHTML(product)).join('');
+}
+
+function renderFeaturedProducts() {
+  const grid = document.getElementById('featuredGrid');
+  if (!grid || typeof PRODUCTS_DATA === 'undefined') return;
+
+  const featured = PRODUCTS_DATA.filter(p => p.featured).slice(0, 4);
+  grid.innerHTML = featured.map(product => createProductCardHTML(product)).join('');
 }
 
 // ==========================================================================
@@ -290,13 +271,15 @@ function renderProducts(category = 'all', searchQuery = '') {
 // ==========================================================================
 function initCategoryFilters() {
   const tabs = document.querySelectorAll('.tab-btn');
+  if (tabs.length === 0) return;
+
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       const category = tab.dataset.category;
       const searchVal = document.getElementById('catalogSearchInput')?.value || '';
-      renderProducts(category, searchVal);
+      renderProductsCatalog(category, searchVal);
     });
   });
 }
@@ -305,299 +288,228 @@ function initSearch() {
   const searchInput = document.getElementById('catalogSearchInput');
   if (!searchInput) return;
 
+  let debounceTimer;
   searchInput.addEventListener('input', (e) => {
-    const activeTab = document.querySelector('.tab-btn.active');
-    const category = activeTab ? activeTab.dataset.category : 'all';
-    renderProducts(category, e.target.value);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const activeTab = document.querySelector('.tab-btn.active');
+      const category = activeTab ? activeTab.dataset.category : 'all';
+      renderProductsCatalog(category, e.target.value);
+    }, 200);
   });
-}
-
-// ==========================================================================
-// INSTAGRAM DM REDIRECTION (PRIMARY ACTION)
-// ==========================================================================
-window.orderProductViaInstagram = function(productId) {
-  const product = PRODUCTS_DATA.find(p => p.id === productId);
-  if (!product) return;
-
-  const text = `Namaste Rupali's Arts! 🙏\n\nI would love to order/inquire about:\n✨ *${product.name}*\n(${product.subtitle})\n\nPlease share the details, customization options, and how to proceed!`;
-  
-  redirectToInstagramDM(text);
-};
-
-window.openInstagramDM = function(customContext = '') {
-  let text = "Namaste Rupali's Arts! 🙏\n\nI visited your website and would love to inquire about your handcrafted festive home decor pieces.";
-  if (customContext) {
-    text = `Namaste Rupali's Arts! 🙏\n\nI'm reaching out regarding: ${customContext}. Please share the details!`;
-  }
-  redirectToInstagramDM(text);
-};
-
-function redirectToInstagramDM(messageText) {
-  // Pre-copy message to clipboard so user can easily paste if direct link lands on general inbox
-  if (navigator.clipboard && messageText) {
-    navigator.clipboard.writeText(messageText).catch(() => {});
-  }
-
-  showToast('Opening Instagram DM with @rupalis_arts...');
-
-  const encoded = encodeURIComponent(messageText);
-  // Universal Instagram Direct link
-  const url = `https://ig.me/m/rupalis_arts?text=${encoded}`;
-  
-  setTimeout(() => {
-    window.open(url, '_blank');
-  }, 350);
 }
 
 // ==========================================================================
 // QUICK VIEW MODAL
 // ==========================================================================
+let currentQuickViewProduct = null;
+
 function initQuickViewModal() {
   const modal = document.getElementById('quickViewModal');
-  const closeBtn = document.getElementById('closeQuickView');
+  const backdrop = document.getElementById('modalBackdrop');
+  const closeBtn = document.getElementById('closeModalBtn');
 
-  closeBtn?.addEventListener('click', () => {
-    modal?.classList.remove('active');
-  });
+  closeBtn?.addEventListener('click', closeQuickView);
+  backdrop?.addEventListener('click', closeQuickView);
 
-  modal?.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.classList.remove('active');
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+      closeQuickView();
     }
   });
 }
 
-window.openQuickView = function(productId) {
+function openQuickView(productId) {
   const product = PRODUCTS_DATA.find(p => p.id === productId);
   if (!product) return;
 
+  currentQuickViewProduct = product;
   const modal = document.getElementById('quickViewModal');
-  const body = document.getElementById('quickViewBody');
-  if (!modal || !body) return;
+  const backdrop = document.getElementById('modalBackdrop');
 
-  body.innerHTML = `
-    <div class="quick-view-grid">
-      <div class="modal-img-wrapper">
-        <img id="modalMainImg" src="${product.image}" alt="${product.name}" />
-        <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
-          ${product.images.map((img, i) => `
-            <img src="${img}" style="width: 55px; height: 55px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid ${i === 0 ? 'var(--gold-400)' : 'transparent'};" onclick="document.getElementById('modalMainImg').src='${img}'" />
-          `).join('')}
-        </div>
-      </div>
+  document.getElementById('modalProductImg').src = product.image;
+  document.getElementById('modalProductImg').alt = product.name;
+  document.getElementById('modalProductCategory').textContent = product.categoryName;
+  document.getElementById('modalProductTitle').textContent = product.name;
+  document.getElementById('modalProductSubtitle').textContent = product.subtitle;
+  document.getElementById('modalProductDescription').textContent = product.description;
 
-      <div style="display: flex; flex-direction: column;">
-        <span class="product-cat-pill">${product.categoryName}</span>
-        <h2 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--emerald-900); margin-bottom: 0.35rem;">${product.name}</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">${product.subtitle}</p>
+  const featuresList = document.getElementById('modalProductFeatures');
+  featuresList.innerHTML = product.features.map(f => `<li>${f}</li>`).join('');
 
-        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem;">
-          <div style="color: var(--amber-500);">
-            ${'★'.repeat(Math.floor(product.rating))}
-          </div>
-          <span style="font-size: 0.85rem; font-weight: 700; color: var(--emerald-900);">${product.rating}</span>
-          <span style="font-size: 0.8rem; color: var(--text-muted);">(${product.reviewsCount} verified reviews)</span>
-        </div>
-
-        <p style="font-size: 0.925rem; color: var(--text-body); margin-bottom: 1.25rem; line-height: 1.6;">${product.description}</p>
-
-        <div style="background: var(--cream-100); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--cream-300);">
-          <h4 style="font-size: 0.825rem; font-weight: 700; text-transform: uppercase; color: var(--emerald-900); margin-bottom: 0.5rem;">Specifications</h4>
-          <div style="display: grid; grid-template-columns: 1fr; gap: 0.35rem; font-size: 0.8rem;">
-            ${Object.entries(product.specifications).map(([key, val]) => `
-              <div><strong style="color: var(--emerald-900);">${key}:</strong> <span style="color: var(--text-body);">${val}</span></div>
-            `).join('')}
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 0.75rem; margin-top: auto; flex-wrap: wrap;">
-          <button class="btn-primary-insta" style="flex: 1; min-width: 180px;" onclick="orderProductViaInstagram('${product.id}')">
-            <i class="fab fa-instagram"></i> Buy Now (Instagram DM)
-          </button>
-          <button class="btn-secondary-outline" onclick="shareProduct('${product.id}')" title="Share with friends/family">
-            <i class="fas fa-share-nodes"></i> Share
-          </button>
-          <button class="btn-secondary-outline" onclick="addToInquiryBag('${product.id}')" title="Save to inquiry bag">
-            <i class="fas fa-bookmark"></i> Save
-          </button>
-        </div>
-      </div>
+  const specsList = document.getElementById('modalProductSpecs');
+  specsList.innerHTML = Object.entries(product.specifications).map(([key, val]) => `
+    <div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed var(--cream-200); font-size: 0.85rem;">
+      <strong style="color: var(--emerald-900);">${key}:</strong>
+      <span style="color: var(--text-body);">${val}</span>
     </div>
-  `;
+  `).join('');
 
-  modal.classList.add('active');
-};
+  modal?.classList.add('active');
+  backdrop?.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
 
-// ==========================================================================
-// 1-CLICK WHATSAPP & SOCIAL SHARE
-// ==========================================================================
-window.shareProduct = function(productId) {
-  const product = PRODUCTS_DATA.find(p => p.id === productId);
-  if (!product) return;
+function closeQuickView() {
+  const modal = document.getElementById('quickViewModal');
+  const backdrop = document.getElementById('modalBackdrop');
 
-  const shareTitle = `${product.name} | Rupali's Arts`;
-  const shareText = `Check out this gorgeous handcrafted ${product.name} (${product.subtitle}) by Rupali's Arts! Perfect for festive home decor.`;
-  const shareUrl = `${window.location.origin}${window.location.pathname}#collection`;
+  modal?.classList.remove('active');
+  backdrop?.classList.remove('active');
+  document.body.style.overflow = '';
+}
 
-  if (navigator.share) {
-    navigator.share({
-      title: shareTitle,
-      text: shareText,
-      url: shareUrl
-    }).catch(() => {});
-  } else {
-    // WhatsApp Fallback
-    const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`;
-    
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(`${shareText} - ${shareUrl}`);
-    }
-    showToast('Link copied! Opening WhatsApp to share...');
-    setTimeout(() => {
-      window.open(whatsappShareUrl, '_blank');
-    }, 400);
+function orderCurrentModalProduct() {
+  if (currentQuickViewProduct) {
+    orderProductViaInstagram(currentQuickViewProduct.id);
   }
-};
-
-// ==========================================================================
-// FESTIVAL COUNTDOWN & CELEBRATION SWITCHER
-// ==========================================================================
-function initFestivalCountdown() {
-  const daysEl = document.getElementById('festivalDays');
-  const hoursEl = document.getElementById('festivalHours');
-  const minsEl = document.getElementById('festivalMins');
-  const secsEl = document.getElementById('festivalSecs');
-  if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
-
-  // Next festive target (Diwali / Ganesh Utsav celebration target)
-  const now = new Date();
-  let targetYear = now.getFullYear();
-  // Target Diwali / Ganesh Utsav season
-  let targetDate = new Date(targetYear, 10, 1, 0, 0, 0); // November 1st
-  if (now > targetDate) {
-    targetDate = new Date(targetYear + 1, 10, 1, 0, 0, 0);
-  }
-
-  function updateTimer() {
-    const currentTime = new Date().getTime();
-    const distance = targetDate.getTime() - currentTime;
-
-    if (distance <= 0) {
-      daysEl.textContent = '00';
-      hoursEl.textContent = '00';
-      minsEl.textContent = '00';
-      secsEl.textContent = '00';
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    daysEl.textContent = String(days).padStart(2, '0');
-    hoursEl.textContent = String(hours).padStart(2, '0');
-    minsEl.textContent = String(minutes).padStart(2, '0');
-    secsEl.textContent = String(seconds).padStart(2, '0');
-  }
-
-  updateTimer();
-  setInterval(updateTimer, 1000);
 }
 
 // ==========================================================================
-// INQUIRY BAG / WISHLIST DRAWER
+// INQUIRY BAG (SAVED PRODUCTS DRAWER)
 // ==========================================================================
-let inquiryBag = [];
+let inquiryBag = JSON.parse(localStorage.getItem('rupalis_inquiry_bag') || '[]');
 
 function initInquiryDrawer() {
   const drawer = document.getElementById('inquiryDrawer');
+  const backdrop = document.getElementById('inquiryBackdrop');
   const openBtn = document.getElementById('btnOpenInquiryDrawer');
   const closeBtn = document.getElementById('btnCloseInquiryDrawer');
   const sendAllBtn = document.getElementById('btnSendAllInquiry');
 
   openBtn?.addEventListener('click', () => {
     drawer?.classList.add('active');
+    backdrop?.classList.add('active');
     renderInquiryDrawerItems();
   });
 
   closeBtn?.addEventListener('click', () => {
     drawer?.classList.remove('active');
+    backdrop?.classList.remove('active');
   });
 
-  sendAllBtn?.addEventListener('click', () => {
-    if (inquiryBag.length === 0) {
-      alert('Your inquiry list is empty. Add products to inquire!');
-      return;
-    }
-
-    const itemsSummary = inquiryBag.map((item, idx) => `${idx + 1}. ${item.name} (${item.subtitle})`).join('\n');
-    const customNotes = document.getElementById('inquiryNotesInput')?.value || '';
-    
-    let msg = `Namaste Rupali's Arts! 🙏\n\nI would love to inquire about the following handcrafted decor pieces:\n\n${itemsSummary}`;
-    if (customNotes.trim() !== '') {
-      msg += `\n\n*Customization / Delivery Note:* ${customNotes.trim()}`;
-    }
-    msg += `\n\nPlease let me know pricing and how to confirm the order!`;
-
-    redirectToInstagramDM(msg);
+  backdrop?.addEventListener('click', () => {
+    drawer?.classList.remove('active');
+    backdrop?.classList.remove('active');
   });
+
+  sendAllBtn?.addEventListener('click', sendAllInquiryBagToInstagram);
+
+  updateInquiryBadgeCount();
 }
 
-window.addToInquiryBag = function(productId) {
+function addToInquiryBag(productId) {
   const product = PRODUCTS_DATA.find(p => p.id === productId);
   if (!product) return;
 
   if (!inquiryBag.some(item => item.id === productId)) {
     inquiryBag.push(product);
-    updateInquiryBadge();
-    showToast(`Added "${product.name}" to inquiry list!`);
+    localStorage.setItem('rupalis_inquiry_bag', JSON.stringify(inquiryBag));
+    updateInquiryBadgeCount();
+    showToast(`Saved "${product.name}" to Inquiry Bag!`);
   } else {
-    showToast(`"${product.name}" is already in your inquiry list!`);
+    showToast(`"${product.name}" is already in your Inquiry Bag.`);
   }
-};
+}
 
-window.removeFromInquiryBag = function(productId) {
+function removeFromInquiryBag(productId) {
   inquiryBag = inquiryBag.filter(item => item.id !== productId);
-  updateInquiryBadge();
+  localStorage.setItem('rupalis_inquiry_bag', JSON.stringify(inquiryBag));
+  updateInquiryBadgeCount();
   renderInquiryDrawerItems();
-};
+}
 
-function updateInquiryBadge() {
-  const badges = document.querySelectorAll('.inquiry-badge-count');
-  badges.forEach(b => {
-    b.textContent = inquiryBag.length;
-    b.style.display = inquiryBag.length > 0 ? 'flex' : 'none';
+function updateInquiryBadgeCount() {
+  const counts = document.querySelectorAll('.inquiry-badge-count');
+  counts.forEach(count => {
+    count.textContent = inquiryBag.length;
+    count.style.display = inquiryBag.length > 0 ? 'flex' : 'none';
   });
 }
 
 function renderInquiryDrawerItems() {
-  const container = document.getElementById('inquiryDrawerList');
-  if (!container) return;
+  const list = document.getElementById('inquiryDrawerList');
+  if (!list) return;
 
   if (inquiryBag.length === 0) {
-    container.innerHTML = `
+    list.innerHTML = `
       <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
-        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🌸</div>
-        <p style="font-weight: 600;">Your inquiry list is empty</p>
-        <p style="font-size: 0.8rem; margin-top: 0.25rem;">Browse products and click save to bundle your custom order inquiry.</p>
+        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🌸</div>
+        <p style="font-weight: 600; color: var(--emerald-900);">Your Inquiry Bag is Empty</p>
+        <p style="font-size: 0.85rem; margin-top: 0.25rem;">Bookmark pieces as you explore the handcrafted collection.</p>
       </div>
     `;
     return;
   }
 
-  container.innerHTML = inquiryBag.map(item => `
+  list.innerHTML = inquiryBag.map(item => `
     <div class="inquiry-item">
       <img src="${item.image}" alt="${item.name}" />
       <div class="inquiry-item-info">
-        <h5>${item.name}</h5>
-        <p>${item.categoryName}</p>
+        <h4>${item.name}</h4>
+        <p>${item.subtitle}</p>
+        <div style="display: flex; gap: 0.75rem; margin-top: 0.4rem;">
+          <a href="javascript:void(0)" onclick="orderProductViaInstagram('${item.id}')" style="font-size: 0.75rem; color: var(--emerald-700); font-weight: 700;">
+            <i class="fab fa-instagram"></i> Inquire Solo
+          </a>
+          <a href="javascript:void(0)" onclick="removeFromInquiryBag('${item.id}')" style="font-size: 0.75rem; color: var(--crimson-600); font-weight: 600;">
+            Remove
+          </a>
+        </div>
       </div>
-      <button class="btn-remove-item" onclick="removeFromInquiryBag('${item.id}')" title="Remove">
-        <i class="fas fa-trash-alt"></i>
-      </button>
     </div>
   `).join('');
+}
+
+function sendAllInquiryBagToInstagram() {
+  if (inquiryBag.length === 0) {
+    showToast('Your Inquiry Bag is empty!');
+    return;
+  }
+
+  const notes = document.getElementById('inquiryNotesInput')?.value || '';
+  const productList = inquiryBag.map((item, idx) => `${idx + 1}. ${item.name} (${item.subtitle})`).join('\n');
+
+  const message = `Namaste Rupali's Arts! 🙏\n\nI would like to inquire about ordering these handcrafted pieces:\n\n${productList}\n\n${notes ? `*Custom Note / Size:* ${notes}\n\n` : ''}Could you please share details, customization options, and pricing?`;
+
+  redirectToInstagramDM(message);
+}
+
+// ==========================================================================
+// INSTAGRAM REDIRECTION (ZERO PRICES / DIRECT INQUIRIES)
+// ==========================================================================
+function orderProductViaInstagram(productId) {
+  const product = PRODUCTS_DATA.find(p => p.id === productId);
+  if (!product) return;
+  redirectToInstagramDM(product.instagramMessage);
+}
+
+function openInstagramDM(topic = 'Festive Home Decor') {
+  const text = `Namaste Rupali's Arts! 🙏 I am interested in ordering handcrafted woolen rangolis and Ganpati aasans (${topic}). Please share details!`;
+  redirectToInstagramDM(text);
+}
+
+function redirectToInstagramDM(prefilledText) {
+  const encodedText = encodeURIComponent(prefilledText);
+  // Try opening Instagram direct message endpoint
+  const url = `https://ig.me/m/rupalis_arts?text=${encodedText}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+function shareProduct(productId) {
+  const product = PRODUCTS_DATA.find(p => p.id === productId);
+  if (!product) return;
+
+  if (navigator.share) {
+    navigator.share({
+      title: `${product.name} | Rupali's Arts`,
+      text: `Look at this beautiful handcrafted ${product.name} by @rupalis_arts! 100% reusable & washable.`,
+      url: window.location.href
+    }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    showToast('Link copied to clipboard! Share with friends 🌸');
+  }
 }
 
 // ==========================================================================
@@ -605,7 +517,7 @@ function renderInquiryDrawerItems() {
 // ==========================================================================
 function renderReviews() {
   const grid = document.getElementById('reviewsGrid');
-  if (!grid) return;
+  if (!grid || typeof REVIEWS_DATA === 'undefined') return;
 
   grid.innerHTML = REVIEWS_DATA.map(r => `
     <div class="review-card">
@@ -637,64 +549,8 @@ function initCustomOrderForm() {
     const city = document.getElementById('customCity')?.value || '';
     const details = document.getElementById('customDetails')?.value || '';
 
-    const text = `Namaste Rupali's Arts! 🙏\n\n*Custom Decor Inquiry*\n*Name:* ${name}\n*City:* ${city}\n*Requirements:* ${details}\n\nPlease let me know how to proceed with the custom order!`;
+    const text = `Namaste Rupali's Arts! 🙏\n\n*Bespoke Custom Decor Inquiry*\n*Name:* ${name}\n*City:* ${city}\n*Requirements:* ${details}\n\nPlease let me know how to proceed with the custom order!`;
     redirectToInstagramDM(text);
-  });
-}
-
-// ==========================================================================
-// FESTIVE AMBIENT AUDIO SYNTHESIZER
-// ==========================================================================
-let audioCtx = null;
-let isAudioPlaying = false;
-
-function initAmbianceAudio() {
-  const btn = document.getElementById('btnAudioAmbiance');
-  if (!btn) return;
-
-  btn.addEventListener('click', () => {
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-
-    isAudioPlaying = !isAudioPlaying;
-    if (isAudioPlaying) {
-      playGentleChimeChord();
-      btn.innerHTML = '<i class="fas fa-volume-up"></i>';
-      btn.style.color = 'var(--gold-400)';
-      showToast('✨ Festive ambiance chimes active');
-    } else {
-      btn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-      btn.style.color = '';
-    }
-  });
-}
-
-function playGentleChimeChord() {
-  if (!audioCtx) return;
-
-  const notes = [523.25, 659.25, 783.99, 1046.50]; // C Major festive chime pentatonic
-  notes.forEach((freq, idx) => {
-    setTimeout(() => {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 3.5);
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start();
-      osc.stop(audioCtx.currentTime + 3.5);
-    }, idx * 180);
   });
 }
 
@@ -708,7 +564,6 @@ function initFaqAccordion() {
       const item = btn.parentElement;
       const isActive = item.classList.contains('active');
 
-      // Close other accordion items
       document.querySelectorAll('.faq-item').forEach(otherItem => {
         if (otherItem !== item) {
           otherItem.classList.remove('active');
@@ -716,7 +571,6 @@ function initFaqAccordion() {
         }
       });
 
-      // Toggle current item
       if (isActive) {
         item.classList.remove('active');
         btn.setAttribute('aria-expanded', 'false');
@@ -746,5 +600,3 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 400);
   }, 3000);
 }
-
-

@@ -621,101 +621,289 @@ button {
 }
 
 /* ==========================================================================
-   FESTIVAL COUNTDOWN & SPECIAL BOOKING BANNER
+   MULTI-PAGE BANNER & BREADCRUMBS
    ========================================================================== */
-.festival-countdown-section {
-  padding: 1.5rem 0 2rem;
-  position: relative;
-  z-index: 10;
-}
-
-.countdown-card {
+.page-header-banner {
   background: var(--grad-emerald);
-  border: 1.5px solid var(--gold-400);
-  border-radius: 24px;
-  padding: 1.5rem 2rem;
   color: #fff;
-  display: grid;
-  grid-template-columns: 1.2fr auto auto;
-  align-items: center;
-  gap: 2rem;
-  box-shadow: var(--shadow-lg), 0 0 35px rgba(245, 158, 11, 0.2);
+  padding: 3.5rem 0 3rem;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
 }
 
-.countdown-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--gold-300);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.25rem;
+.page-header-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(251, 191, 36, 0.12) 0%, transparent 60%);
+  pointer-events: none;
 }
 
-.countdown-title {
-  font-family: var(--font-serif);
-  font-size: 1.45rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.25;
-  margin-bottom: 0.25rem;
-}
-
-.countdown-subtitle {
-  font-size: 0.85rem;
-  color: #e5e7eb;
-}
-
-.countdown-timer-group {
+.breadcrumb-nav {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--cream-300);
+  margin-bottom: 0.85rem;
 }
 
-.timer-unit {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(251, 191, 36, 0.35);
-  border-radius: 14px;
-  padding: 0.6rem 0.85rem;
-  min-width: 58px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-}
-
-.timer-digit {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 700;
+.breadcrumb-nav a {
   color: var(--gold-300);
-  display: block;
-  line-height: 1;
+  transition: var(--transition-fast);
 }
 
-.timer-label {
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #d1d5db;
+.breadcrumb-nav a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.page-header-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+
+.page-header-title .title-accent {
+  background: var(--grad-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.page-header-subtitle {
+  font-size: 1rem;
+  color: var(--cream-200);
+  max-width: 680px;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   ABOUT & ARTISANAL CRAFT STYLES
+   ========================================================================== */
+.story-section {
+  padding: 4.5rem 0;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.story-image-stack {
+  position: relative;
+}
+
+.story-main-img {
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
+  border: 4px solid #fff;
+  width: 100%;
+}
+
+.artisan-badge-card {
+  position: absolute;
+  bottom: -15px;
+  right: -15px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--cream-300);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.artisan-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--emerald-900);
+  border-left: 3px solid var(--gold-400);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  line-height: 1.6;
+}
+
+.craft-process-section {
+  padding: 4.5rem 0;
+  background: var(--cream-100);
+  border-top: 1px solid var(--cream-200);
+  border-bottom: 1px solid var(--cream-200);
+}
+
+.craft-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.step-card {
+  background: #fff;
+  border: 1px solid var(--cream-200);
+  border-radius: 18px;
+  padding: 1.75rem 1.25rem;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--gold-400);
+}
+
+.step-number {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold-500);
+  line-height: 1;
+  margin-bottom: 0.6rem;
+}
+
+.step-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--emerald-900);
+  margin-bottom: 0.5rem;
+}
+
+.step-card p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   CARE GUIDE & FAQS
+   ========================================================================== */
+.care-guide-section {
+  padding: 4.5rem 0 2rem;
+}
+
+.care-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.care-card {
+  background: #fff;
+  border: 1px solid var(--cream-200);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: var(--transition-normal);
+}
+
+.care-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--emerald-600);
+}
+
+.care-card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--emerald-100);
+  color: var(--emerald-800);
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.15rem;
+}
+
+.care-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--emerald-900);
+  margin-bottom: 0.6rem;
+}
+
+.care-card p {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   CUSTOM ORDER & SIZE GUIDE
+   ========================================================================== */
+.custom-order-page-section {
+  padding: 4.5rem 0;
+}
+
+.size-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin: 2rem 0 3rem;
+}
+
+.size-card {
+  background: #fff;
+  border: 1.5px solid var(--cream-200);
+  border-radius: 18px;
+  padding: 1.5rem 1.15rem;
+  text-align: center;
+  transition: var(--transition-fast);
+}
+
+.size-card:hover {
+  border-color: var(--emerald-700);
+  background: var(--emerald-50);
+}
+
+.size-card .size-val {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--emerald-900);
+  display: block;
+}
+
+.size-card .size-rec {
+  font-size: 0.775rem;
+  color: var(--amber-600);
+  font-weight: 600;
   margin-top: 0.25rem;
   display: block;
 }
 
-.timer-colon {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--gold-400);
+.size-card p {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
 }
 
 @media (max-width: 1024px) {
-  .countdown-card {
+  .story-grid {
     grid-template-columns: 1fr;
-    text-align: center;
-    gap: 1.25rem;
+    gap: 2.5rem;
   }
-  .countdown-timer-group {
-    justify-content: center;
+  .craft-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .size-guide-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .care-guide-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 }
 
@@ -1780,11 +1968,7 @@ button {
   background: rgba(6, 35, 25, 0.75);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
+  z-index: 1000;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -1792,6 +1976,26 @@ button {
 }
 
 .modal-backdrop.active {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.quick-view-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.quick-view-modal.active {
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
@@ -1808,6 +2012,7 @@ button {
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--cream-300);
   animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
 }
 
 .modal-close-btn {
