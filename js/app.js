@@ -246,7 +246,7 @@ function renderProductsCatalog(category = 'all', searchQuery = '') {
       <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem;">
         <div style="font-size: 2.5rem; margin-bottom: 1rem;">🌸</div>
         <h3 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--emerald-900); margin-bottom: 0.5rem;">No products match your search</h3>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Try browsing another category or message Aunt Rupali directly on Instagram for custom designs.</p>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Try browsing another category or message us directly on Instagram for custom designs.</p>
         <button class="btn-primary-insta" onclick="openInstagramDM('Custom Design Inquiry')">
           <i class="fab fa-instagram"></i> Ask on Instagram DM
         </button>
