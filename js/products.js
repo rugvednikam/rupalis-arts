@@ -240,6 +240,72 @@ const PRODUCTS_DATA = [
       { name: 'Royal Emerald & Golden Yellow', color: '#004d40', image: 'assets/images/detachable-semicircle.jpg' }
     ],
     instagramMessage: "Hello Rupali's Arts! I loved the Detachable 2-Piece Semicircle Royal Mandala. Please share the details, customization, and how to place the order!"
+  },
+  {
+    id: 'vitthal-sacred-art',
+    name: 'Lord Vitthal (Pandurang) Sacred Wall & Altar Plate',
+    subtitle: 'Golden Mukut, Pearl Kanthi & Floral Border',
+    category: 'sacred-art',
+    categoryName: 'Sacred Wall Art',
+    badge: 'Artisan Masterpiece',
+    featured: true,
+    image: 'assets/images/vitthal-sacred-art.jpg',
+    images: [
+      'assets/images/vitthal-sacred-art.jpg'
+    ],
+    rating: 5.0,
+    reviewsCount: 52,
+    description: 'A magnificent handcrafted circular sacred plate depicting Lord Vitthal (Pandurang) in devotional splendor. Features an ornate golden mukut (crown), delicate pearl necklace, makarkundal earrings, yellow sunburst halo, and a vibrant crimson-red floral petal rim. Perfect for pooja room altars, living room focal walls, and auspicious housewarming gifts.',
+    features: [
+      'Detailed hand-sculpted Lord Vitthal silhouette with tilak & golden crown',
+      'Embellished with lustrous faux pearls, kundan gems & makarkundal',
+      'Festive crimson red, saffron orange, and peacock blue color palette',
+      'Versatile display: Altar backdrop or wall-mounted hanging',
+      '100% Handcrafted with devotion in Maharashtra'
+    ],
+    specifications: {
+      'Craft': 'Hand-sculpted Clay Relief & Acrylic Pearl Embellishment',
+      'Diameter': 'approx. 12" - 14" Diameter',
+      'Ideal For': 'Pooja Ghar, Living Room Wall, Ashadhi Ekadashi, Auspicious Gifting',
+      'Care': 'Wipe gently with a soft dry cloth'
+    },
+    variants: [
+      { name: 'Devotional Crimson & Gold', color: '#d32f2f', image: 'assets/images/vitthal-sacred-art.jpg' }
+    ],
+    instagramMessage: "Hello Rupali's Arts! I would love to inquire about the handcrafted Lord Vitthal (Pandurang) Sacred Wall & Altar Plate. Please share the details and customization options."
+  },
+  {
+    id: 'sai-baba-tree-art',
+    name: 'Shirdi Sai Baba Sacred Tree & Mirror Frame Plate',
+    subtitle: 'Meditative Silhouette with Sacred Tree & Mirror Rim',
+    category: 'sacred-art',
+    categoryName: 'Sacred Wall Art',
+    badge: 'Spiritual Aura',
+    featured: true,
+    image: 'assets/images/sai-baba-tree-art.jpg',
+    images: [
+      'assets/images/sai-baba-tree-art.jpg'
+    ],
+    rating: 5.0,
+    reviewsCount: 44,
+    description: 'An auspicious circular wall art plate portraying Shirdi Sai Baba in serene meditation under the sacred tree. Handcrafted with textured embossed green foliage, rooted tree branches, sun halo, and a traditional sparkling diamond mirror-work border that brings peace and positive energy to your space.',
+    features: [
+      'Serene hand-painted Sai Baba silhouette with auspicious chandan tilak',
+      'Intricately sculpted green tree leaves and rooted earthen branches',
+      'Sparkling diamond mirror-work border rim reflecting ambient light',
+      'Brings spiritual calmness, positive aura, and blessing to homes',
+      '100% Handcrafted by Rupali\'s Arts'
+    ],
+    specifications: {
+      'Craft': 'Embossed Clay Relief with Traditional Mirror Work',
+      'Diameter': 'approx. 12" - 14" Diameter',
+      'Ideal For': 'Mandir Temple Backdrop, Entry Foyer, Meditation Rooms, Gifting',
+      'Care': 'Dust gently with dry microfiber cloth'
+    },
+    variants: [
+      { name: 'Sacred Green & Mirror Rim', color: '#2e7d32', image: 'assets/images/sai-baba-tree-art.jpg' }
+    ],
+    instagramMessage: "Hello Rupali's Arts! I'm interested in the Shirdi Sai Baba Sacred Tree & Mirror Frame Plate. Please share more details and order information."
   }
 ];
 
