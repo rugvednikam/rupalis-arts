@@ -140,7 +140,7 @@ const PRODUCTS_DATA = [
     variants: [
       { name: 'Marigold Blossom (Orange & Yellow)', color: '#ff9800', image: 'assets/images/woolen-rangoli-small.jpg' }
     ],
-    instagramMessage: "Hello Rupali's Arts! I would like to buy the Woolen Floral Mandala Rangoli (Small Size). Please share the price and delivery timeline."
+    instagramMessage: "Hello Rupali's Arts! I would like to inquire about the Woolen Floral Mandala Rangoli (Small Size). Please share more details and customization options."
   },
   {
     id: 'woolen-pathway-rangoli',
@@ -273,7 +273,7 @@ const REVIEWS_DATA = [
     author: 'Ananya Sharma',
     city: 'Nashik',
     rating: 5,
-    text: 'Ordered 4 pieces of the pathway sunflower steppers for our hallway entrance. Placing tea lights in the middle looked like a royal temple path at night. Quick delivery and lovely packaging!',
+    text: 'Ordered 4 pieces of the pathway sunflower steppers for our hallway entrance. Placing tea lights in the middle looked like a royal temple path at night. Beautiful finish and lovely packaging!',
     product: 'Woolen Pathway & Border Rangoli',
     date: 'October 2025'
   },
