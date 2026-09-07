@@ -262,7 +262,7 @@ function renderFeaturedProducts() {
   const grid = document.getElementById('featuredGrid');
   if (!grid || typeof PRODUCTS_DATA === 'undefined') return;
 
-  const featured = PRODUCTS_DATA.filter(p => p.featured).slice(0, 4);
+  const featured = PRODUCTS_DATA.filter(p => p.featured).slice(0, 8);
   grid.innerHTML = featured.map(product => createProductCardHTML(product)).join('');
 }
 
