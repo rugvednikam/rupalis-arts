@@ -306,6 +306,105 @@ const PRODUCTS_DATA = [
       { name: 'Sacred Green & Mirror Rim', color: '#2e7d32', image: 'assets/images/sai-baba-tree-art.jpg' }
     ],
     instagramMessage: "Hello Rupali's Arts! I'm interested in the Shirdi Sai Baba Sacred Tree & Mirror Frame Plate. Please share more details and order information."
+  },
+  {
+    id: 'terracotta-velvet-vase',
+    name: 'Handcrafted Terracotta Vase with Velvet Flowers',
+    subtitle: 'Embossed Clay Relief, Circular Mirrors & Velvet Blooms',
+    category: 'sacred-art',
+    categoryName: 'Sacred Art & Decor',
+    badge: 'Unique Craft',
+    featured: true,
+    image: 'assets/images/terracotta-velvet-vase.jpg',
+    images: [
+      'assets/images/terracotta-velvet-vase.jpg'
+    ],
+    rating: 5.0,
+    reviewsCount: 36,
+    description: 'A traditional terracotta pot adorned with hand-sculpted clay spiral reliefs, circular mirror work, and lotus engravings in rustic crimson. Filled with handmade plush maroon velvet blooming flowers and soft green velvet stems that add everlasting freshness to altars and festive centerpieces.',
+    features: [
+      'Handcrafted terracotta clay pot with embossed spiral & lotus motifs',
+      'Embellished with sparkling circular mirrors and antique finish',
+      'Includes handmade plush maroon velvet flowers and green velvet stems',
+      'Never withers — reusable forever for festivals and home styling',
+      '100% Handcrafted by Rupali\'s Arts'
+    ],
+    specifications: {
+      'Craft': 'Clay Relief Embossing on Terracotta with Velvet Flowers',
+      'Height': 'approx. 10" - 12" Total Height',
+      'Ideal For': 'Pooja Altars, Living Room Shelves, Festive Centerpiece, Gifting',
+      'Care': 'Wipe pot gently with dry cloth; dust velvet with soft brush'
+    },
+    variants: [
+      { name: 'Rustic Crimson & Maroon Velvet', color: '#880e4f', image: 'assets/images/terracotta-velvet-vase.jpg' }
+    ],
+    instagramMessage: "Hello Rupali's Arts! I would love to order the Handcrafted Terracotta Vase with Velvet Flowers. Please share details and pricing!"
+  },
+  {
+    id: 'lippan-diamond-frame',
+    name: 'Traditional Lippan Art Geometric Diamond Mirror Frame',
+    subtitle: 'Vibrant Multi-Color Checkered Grid with Mirror Mosaic',
+    category: 'sacred-art',
+    categoryName: 'Lippan & Wall Art',
+    badge: 'Festive Statement',
+    featured: true,
+    image: 'assets/images/lippan-diamond-frame.jpg',
+    images: [
+      'assets/images/lippan-diamond-frame.jpg'
+    ],
+    rating: 5.0,
+    reviewsCount: 48,
+    description: 'An eye-catching diamond-oriented traditional Lippan art wall panel featuring an intricate multi-color checkered grid in auspicious green, saffron orange, royal blue, and ruby pink. Each square features central circular mirrors surrounded by white clay dot work, bordered by diamond-cut mirror glass mosaics.',
+    features: [
+      'Traditional mud & mirror craft (Lippan Kaam) in diamond geometry',
+      'Hand-sculpted white clay relief borders and pearl-like dot work',
+      'Vibrant color blocks with light-reflecting glass mirrors',
+      'Ideal for entryway foyers, pooja backdrops, and balcony garden walls',
+      'Authentic handcrafted art piece'
+    ],
+    specifications: {
+      'Craft': 'Lippan Mud Relief & Mirror Mosaic Work',
+      'Size': 'approx. 14" x 14" Diagonal Diamond',
+      'Ideal For': 'Entryway Foyer, Mandir Backdrop, Living Room Gallery Wall',
+      'Care': 'Wipe gently with a dry microfiber cloth'
+    },
+    variants: [
+      { name: 'Multi-Color Festive Grid', color: '#ff6f00', image: 'assets/images/lippan-diamond-frame.jpg' }
+    ],
+    instagramMessage: "Hello Rupali's Arts! I'm interested in the Traditional Lippan Art Geometric Diamond Mirror Frame. Please share more details and availability."
+  },
+  {
+    id: 'lippan-circular-mandala-mirror',
+    name: 'Handcrafted Circular Lippan Art Lotus Mandala Mirror',
+    subtitle: 'Diamond Mosaic Border with Painted Lotus Petals',
+    category: 'sacred-art',
+    categoryName: 'Lippan & Wall Art',
+    badge: 'Artisan Masterpiece',
+    featured: true,
+    image: 'assets/images/lippan-circular-mandala-mirror.jpg',
+    images: [
+      'assets/images/lippan-circular-mandala-mirror.jpg'
+    ],
+    rating: 5.0,
+    reviewsCount: 59,
+    description: 'A majestic circular Lippan mirror wall piece featuring concentric bands of diamond-cut glass mosaics, golden accented borders, and hand-painted lotus mandala petals in ruby red, turquoise green, and sunlit yellow. Designed with a central high-clarity mirror to illuminate and expand any room.',
+    features: [
+      'Intricate handcrafted diamond mirror mosaic outer border',
+      'Hand-painted traditional lotus mandala motif with gold linework',
+      'High-clarity center mirror that reflects natural and festive candlelight',
+      'Sturdy wall-mount hook attached for effortless hanging',
+      '100% Handmade by Rupali\'s Arts in Maharashtra'
+    ],
+    specifications: {
+      'Craft': 'Lippan Mirror Mosaic with Hand-Painted Lotus Mandala',
+      'Diameter': 'approx. 12" - 14" Diameter',
+      'Ideal For': 'Foyer Mirror, Living Room Feature Wall, Bedroom, Auspicious Gifting',
+      'Care': 'Clean mirror glass with glass cleaner; dust border gently'
+    },
+    variants: [
+      { name: 'Ruby Lotus & Diamond Mirror Mosaic', color: '#c2185b', image: 'assets/images/lippan-circular-mandala-mirror.jpg' }
+    ],
+    instagramMessage: "Hello Rupali's Arts! I loved the Circular Lippan Art Lotus Mandala Mirror. Please share the details, pricing, and how to order!"
   }
 ];
 
